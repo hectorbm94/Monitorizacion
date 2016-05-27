@@ -47,14 +47,19 @@
 											class="table table-striped responsive-utilities jambo_table">
 											<thead>
 												<tr class="headings">
-													<th></th>
 													<th>LAP</th>
 													<th>Fecha</th>
-													<th>canal</th>
+													<th>Canal</th>
 													<th>SNR</th>
 												</tr>
 											</thead>
 											<tbody>
+												<c:forEach items="${dispositivos}" var="dispositivo">
+													<td><c:out value="${dispositivo.LAP}" /></td>
+													<td><c:out value="${dispositivo.systime}" /></td>
+													<td><c:out value="${dispositivo.canal}" /></td>
+													<td><c:out value="${dispositivo.SNR}" /></td>
+												</c:forEach>				
 											</tbody>
 										</table>
 									</div>

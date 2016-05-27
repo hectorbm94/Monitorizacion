@@ -4,6 +4,9 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	
+	<!-- Servlets de la aplicacion -->
+	
 	<servlet>
 		<servlet-name>Monitorizacion</servlet-name>
 		<servlet-class>es.upm.monitorizacion.servlet.MonitorizacionServlet</servlet-class>
@@ -12,6 +15,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>Monitorizacion</servlet-name>
 		<url-pattern>/monitorizacion</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Captura</servlet-name>
+		<servlet-class>es.upm.monitorizacion.servlet.CapturaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Captura</servlet-name>
+		<url-pattern>/captura</url-pattern>
+	</servlet-mapping>
+	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

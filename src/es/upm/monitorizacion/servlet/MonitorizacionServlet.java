@@ -1,21 +1,23 @@
 package es.upm.monitorizacion.servlet;
 import java.io.IOException;
+import java.util.List;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.*;
+
+import es.upm.monitorizacion.dao.DispositivosDAO;
+import es.upm.monitorizacion.dao.DispositivosDAOImpl;
+import es.upm.monitorizacion.model.Dispositivos;
 
 @SuppressWarnings("serial")
 public class MonitorizacionServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		
-		RequestDispatcher view = req.getRequestDispatcher("/pages/index.jsp");
+		DispositivosDAO dao = DispositivosDAOImpl.getInstance();
 		
-		try {
-			view.forward(req, resp);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		}
+		List<Dispositivos> dispositivos = dao.readDispositivos();
 		
+		req.setAttribute("dispositivos", dispositivos);
+		
+		resp.sendRedirect("/pages/index.jsp");
 	}
 }
