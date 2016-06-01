@@ -11381,7 +11381,7 @@
 			 * * `\_PAGES\_` - Total number of pages of data in the table
 			 *
 			 *  @type string
-			 *  @default Mostrando de la subasta _START_ a la _END_ de un total de _TOTAL_ subastas
+			 *  @default Mostrando del dispositivo _START_ al _END_ de un total de _TOTAL_ dispositivos
 			 *
 			 *  @dtopt Language
 			 *  @name DataTable.defaults.language.info
@@ -11395,7 +11395,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Mostrando de la subasta _START_ a la _END_ de un total de _TOTAL_ subastas",
+			"sInfo": "Mostrando del dispositivo _START_ al _END_ de un total de _TOTAL_ dispositivos",
 	
 	
 			/**
@@ -11524,7 +11524,7 @@
 			 * with a default select list of 10, 25, 50 and 100, and can be replaced
 			 * with a custom select box if required.
 			 *  @type string
-			 *  @default Subastas por página: _MENU_
+			 *  @default Dispositivos por página: _MENU_
 			 *
 			 *  @dtopt Language
 			 *  @name DataTable.defaults.language.lengthMenu
@@ -11556,7 +11556,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Subastas por página: _MENU_",
+			"sLengthMenu": "Dispositivos por página: _MENU_",
 	
 	
 			/**

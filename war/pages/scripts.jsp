@@ -75,14 +75,7 @@
 	var asInitVals = new Array();
 	$(document).ready(function() {
 		var oTable = $('#example').dataTable({
-			"oLanguage" : {
-				"sSearch" : "Buscar:"
-			},
-			"aoColumnDefs" : [ {
-				'bSortable' : false,
-				'aTargets' : [ 0 ]
-			} //disables sorting for column one
-			],
+			
 			'iDisplayLength' : 12,
 			"sPaginationType" : "full_numbers",
 			"dom" : 'T<"clear">lfrtip',

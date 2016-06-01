@@ -47,7 +47,7 @@
 											class="table table-striped responsive-utilities jambo_table">
 											<thead>
 												<tr class="headings">
-													<th>LAP</th>
+													<th class="sorting">LAP</th>
 													<th>Fecha</th>
 													<th>Canal</th>
 													<th>SNR</th>
@@ -55,15 +55,34 @@
 											</thead>
 											<tbody>
 												<c:forEach items="${dispositivos}" var="dispositivo">
-													<td><c:out value="${dispositivo.LAP}" /></td>
-													<td><c:out value="${dispositivo.systime}" /></td>
-													<td><c:out value="${dispositivo.canal}" /></td>
-													<td><c:out value="${dispositivo.SNR}" /></td>
-												</c:forEach>				
+													<tr>
+														<td><c:out value="${dispositivo.LAP}" /></td>
+														<td><c:out value="${dispositivo.systime}" /></td>
+														<td><c:out value="${dispositivo.canal}" /></td>
+														<td><c:out value="${dispositivo.SNR}" /></td>
+													</tr>
+												</c:forEach>
 											</tbody>
 										</table>
 									</div>
 								</div>
+								<c:if test="${alerta == 'Fichero subido con éxito'}">
+									<div class="alert alert-success fade in"
+										style="font-size: 14px;">
+										<a class="close" href="#" data-dismiss="alert">x</a> <strong>Fichero correcto: 
+										</strong>
+										<c:out value="${alerta}" />
+									</div>
+								</c:if>
+								<c:if
+									test="${alerta != null && alerta != 'Fichero subido con éxito'}">
+									<div class="alert alert-danger fade in"
+										style="color: white; font-size: 14px;">
+										<a class="close" href="#" data-dismiss="alert">x</a> <strong>Error:
+										</strong>
+										<c:out value="${alerta}" />
+									</div>
+								</c:if>
 							</div>
 						</div>
 					</div>
