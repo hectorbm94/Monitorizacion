@@ -11,7 +11,7 @@
 			<div class="menu_section">
 				<ul class="nav side-menu">
 					<li><a href="/monitorizacion"><i class="fa fa-table"></i>Dispositivos</a></li>
-					<li><a href="/OTRO"><i class="fa fa-bar-chart-o"></i>Datos generales </a></li>
+					<li><a href="/analisis"><i class="fa fa-bar-chart-o"></i>Datos generales </a></li>
 					<li><a href="/pages/fichero.jsp"><i class="fa fa-edit"></i>Añadir fichero de captura </a></li>
 				</ul>
 			</div>

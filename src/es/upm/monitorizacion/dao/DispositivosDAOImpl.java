@@ -1,7 +1,9 @@
 package es.upm.monitorizacion.dao;
 
 import es.upm.monitorizacion.emf.EMFService;
+
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
@@ -86,6 +88,20 @@ public class DispositivosDAOImpl implements DispositivosDAO {
 		
 		Query q = em.createQuery("select t from Dispositivos t where t.id = :id");
 	    q.setParameter("id", id);
+	    
+	    List<Dispositivos> dispositivos = q.getResultList();
+		em.close();
+		
+		return dispositivos;
+	}
+
+	@Override
+	public List<Dispositivos> readDispositivos_systime(Long systime) {
+		
+		EntityManager em = EMFService.get().createEntityManager();
+		
+		Query q = em.createQuery("select t from Dispositivos t where t.systime = :systime");
+	    q.setParameter("systime", systime);
 	    
 	    List<Dispositivos> dispositivos = q.getResultList();
 		em.close();

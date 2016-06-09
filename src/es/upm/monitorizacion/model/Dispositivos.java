@@ -29,6 +29,10 @@ public class Dispositivos implements Serializable {
 		this.potenciaRuido = potenciaRuido;
 		SNR = sNR;
 	}
+	
+	public Long getId() {
+		return id;
+	}
 
 	public Long getSystime() {
 		return systime;
