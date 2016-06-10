@@ -148,7 +148,7 @@ public class CapturaServlet extends HttpServlet {
 							
 							aux = true;
 						}
-						if (dao1.readResumenDisp_systimeOUT(systimeOUT).get(k).getLAP().equals(lAP)){
+						if (k < dao1.readResumenDisp_systimeOUT(systimeOUT).size() && dao1.readResumenDisp_systimeOUT(systimeOUT).get(k).getLAP().equals(lAP)){
 							aux = true;
 						}
 					}
@@ -176,7 +176,7 @@ public class CapturaServlet extends HttpServlet {
 					
 					aux = true;
 				}
-				if (dao1.readResumenDisp_systimeOUT(systimeOUT).get(k).getLAP().equals(lAP)){
+				if (k < dao1.readResumenDisp_systimeOUT(systimeOUT).size() && dao1.readResumenDisp_systimeOUT(systimeOUT).get(k).getLAP().equals(lAP)){
 					aux = true;
 				}
 			}

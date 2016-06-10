@@ -7,7 +7,7 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 <!-- jQuery -->
-<script src="../js/countdown.js"></script>
+<script src="../js/Chart.js"></script>
 <script src="../js/jquery.min.js"></script>
 <script src="../js/nicescroll/jquery.nicescroll.min.js"></script>
 <script src="../js/jquery-numeric.js"></script>

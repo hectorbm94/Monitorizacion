@@ -40,10 +40,64 @@
 							<div class="panel panel-default">
 								<!-- /.panel-heading -->
 								<div class="panel-body">
+									<canvas id="myChart"></canvas>
 									<script src="../js/Chart.js"></script>
 									<script>
-   										 var myChart = new Chart({...})
-   										 
+										var ctx = document.getElementsByTagName('canvas')[0];
+										ctx.height = 70;
+										
+										var axisX = [];
+										<c:forEach items="${dias}" var="x">
+											axisX.push("<c:out value='${x}'/>");
+										</c:forEach>
+										
+										var axisY = [];
+										<c:forEach items="${total}" var="y">
+											axisY.push(parseInt("<c:out value='${y}'/>"));
+										</c:forEach>
+										
+										var data = {
+										    labels  : axisX,
+										    datasets: [
+												{
+													label: "Dispositivos/Día",
+													fill: false,
+													lineTension: 0.1,
+													backgroundColor: "rgba(75,192,192,0.4)",
+													borderColor: "rgba(75,192,192,1)",
+													borderCapStyle: 'butt',
+													borderDash: [],
+													borderDashOffset: 0.0,
+													borderJoinStyle: 'miter',
+													pointBorderColor: "rgba(75,192,192,1)",
+													pointBackgroundColor: "#fff",
+													pointBorderWidth: 1,
+													pointHoverRadius: 5,
+													pointHoverBackgroundColor: "rgba(75,192,192,1)",
+													pointHoverBorderColor: "rgba(220,220,220,1)",
+													pointHoverBorderWidth: 2,
+													pointRadius: 1,
+													pointHitRadius: 10,
+													data: axisY,
+												}
+										    ]
+										};
+											
+										var options = {
+											scales: {
+									            yAxes: [{
+									                ticks: {
+									                    beginAtZero:true
+									                }
+									            }]
+									        }
+										};
+										
+										var myChart = new Chart(ctx, {
+										    type   : 'line',
+										    data   : data,
+										    options: options
+										});
 									</script>
 								</div>
 								<!-- /.panel-body -->
