@@ -22,8 +22,8 @@ public class AnalisisServlet extends HttpServlet {
 		ResumenDispDAO dao = ResumenDispDAOImpl.getInstance();
 		req.getSession().setAttribute("dispositivos", new ArrayList<ResumenDisp>(dao.readResumenDisp()));
 		
-		//ArrayList<ResumenDisp> arrivals = new ArrayList<ResumenDisp>();
-		//ArrayList<ResumenDisp> departures = new ArrayList<ResumenDisp>();
+		ArrayList<ResumenDisp> arrivals = new ArrayList<ResumenDisp>();
+		ArrayList<ResumenDisp> departures = new ArrayList<ResumenDisp>();
 		Integer[] total = new Integer[5];
 		for(int i = 0; i < total.length; i++){
 			total[i]=0;
@@ -32,6 +32,7 @@ public class AnalisisServlet extends HttpServlet {
 		
 		Long milisDia = (long) 86400000;
 		Date ahora = new Date();
+		Long milisAhora = ahora.getTime();
 		Long milisHoy = (long) ahora.getTime() - (ahora.getHours()*60*60*1000) - (ahora.getMinutes()*60*1000) - (ahora.getSeconds()*1000);
 		Date hoy = new Date(ahora.getYear(), ahora.getMonth(), ahora.getDate(), 0, 0);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -45,11 +46,39 @@ public class AnalisisServlet extends HttpServlet {
 			}
 		}
 		
+		boolean aux = true;
 		List<ResumenDisp> dispo = dao.readResumenDisp();
 		for (int i = 0; i < dispo.size(); i++){
 			
 			if ((dispo.get(i).getSystimeIN()*1000) > milisHoy){
 				total[0]++;
+				if (arrivals.size() == 0 && departures.size() == 0){
+					arrivals.add(dispo.get(i));
+					departures.add(dispo.get(i));
+				} else{
+					for (int j = 0; j < arrivals.size(); j++){
+						if (dispo.get(i).getSystimeIN() >= arrivals.get(j).getSystimeIN()){
+							arrivals.add(j, dispo.get(i));
+							aux = false;
+							break;
+						}						
+					}
+					if (aux){
+						arrivals.add(dispo.get(i));
+					}
+					aux = true;
+					for (int j = 0; j < departures.size(); j++){
+						if (dispo.get(i).getSystimeOUT() >= departures.get(j).getSystimeOUT()){
+							departures.add(j, dispo.get(i));
+							aux = false;
+							break;
+						}						
+					}
+					if (aux){
+						departures.add(dispo.get(i));
+					}
+				}
+				
 			}
 			else if ((dispo.get(i).getSystimeIN()*1000) < milisHoy && (dispo.get(i).getSystimeIN()*1000) > (milisHoy - milisDia)){
 				total[1]++;
@@ -64,10 +93,10 @@ public class AnalisisServlet extends HttpServlet {
 				total[4]++;
 			}
 		}
-		/*for (int i = 0; i < total.length; i++){
-			System.out.println(total[i]);
-		}*/
 		
+		req.getSession().setAttribute("milisAhora", (milisAhora/1000) - 900);
+		req.getSession().setAttribute("arrivals", arrivals);
+		req.getSession().setAttribute("departures", departures);
 		req.getSession().setAttribute("total", Arrays.asList(total));
 		req.getSession().setAttribute("dias", Arrays.asList(dias));
 		resp.sendRedirect("/pages/analisis.jsp");

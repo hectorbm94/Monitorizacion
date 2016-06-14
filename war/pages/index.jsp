@@ -66,6 +66,7 @@
 												</c:forEach>
 											</tbody>
 										</table>
+										<p><c:out value="${mensaje}" /></p>
 									</div>
 								</div>
 								<c:if test="${alerta == 'Fichero subido con éxito'}">

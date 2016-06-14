@@ -99,6 +99,127 @@
 										    options: options
 										});
 									</script>
+									<div id="tablas" style="overflow:hidden; text-align: center; margin:auto;">
+										<div class="tabla1" style="display:inline-table; width: 300px;	height: auto; margin-right: 10px;">
+											<table id="arrivals" class="table table-striped responsive-utilities jambo_table">
+												<thead>
+													<tr class="headings">
+														<th colspan="2" style="text-align: center;">Arrivals</th>
+													</tr>
+													<tr class="headings">
+														<th style="text-align: center;">LAP</th>
+														<th style="text-align: center;">Fecha Entrada</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach items="${arrivals}" var="dispositivo">
+													<tr>
+														<td><c:out value="${dispositivo.LAP}" /></td>
+														<td id="arrivals${dispositivo.id}">
+															<span class="hours${dispositivo.id}"></span>
+															<span class="minutes${dispositivo.id}"></span>
+														</td>
+													</tr>
+													<script>
+														
+													function getTimeRemaining(endtime) {
+														var t = parseInt(${milisAhora}) - endtime;
+														var minutes = 0;
+														var hours = 0;
+														if (t > 0) {
+															t = Date.parse(new Date()) - (endtime*1000);
+															minutes = Math.floor((t / 1000 / 60) % 60);
+															hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+														} else{
+															aux = true;
+														}
+														return {
+															'total': t,
+															'hours': hours,
+															'minutes': minutes
+														};
+													}
+														
+														var clock = document.getElementById('arrivals' + ${dispositivo.id});
+														var hoursSpan = clock.querySelector('.hours' + ${dispositivo.id});
+														var minutesSpan = clock.querySelector('.minutes' + ${dispositivo.id});
+														var aux = false;
+														var t = getTimeRemaining(${dispositivo.systimeIN});
+														
+														if (aux){
+															minutesSpan.innerHTML = 'few minutes ago';
+														} else{
+															hoursSpan.innerHTML = t.hours + 'h ' + ':';
+															minutesSpan.innerHTML = t.minutes + 'm ' + 'ago';
+														}
+														
+														
+													</script>
+													</c:forEach>
+												</tbody>
+											</table>
+										</div>
+										<div class="tabla2" style="display:inline-table; width: 300px; height: auto;">
+											<table id="departures" class="table table-striped responsive-utilities jambo_table">
+												<thead>
+													<tr class="headings">
+														<th colspan="2" style="text-align: center;">Departures</th>
+													</tr>	
+													<tr class="headings">
+														<th style="text-align: center;">LAP</th>
+														<th style="text-align: center;">Fecha Salida</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach items="${departures}" var="dispositivo">
+													<tr>
+														<td><c:out value="${dispositivo.LAP}" /></td>
+														<td id="departures${dispositivo.id}">
+															<span class="hours1${dispositivo.id}"></span>
+															<span class="minutes1${dispositivo.id}"></span>
+														</td>
+													</tr>
+													<script>
+														
+													function getTimeRemaining(endtime) {
+														var t = parseInt(${milisAhora}) - endtime;
+														var minutes = 0;
+														var hours = 0;
+														
+														if (t > 0) {
+															t = (Date.parse(new Date())) - (endtime*1000);
+															minutes = Math.floor((t / 1000 / 60) % 60);
+															hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+														} else{
+															aux = true;
+														}
+														return {
+															'total': t,
+															'hours': hours,
+															'minutes': minutes
+														};
+													}
+														
+														var clock = document.getElementById('departures' + ${dispositivo.id});
+														var hoursSpan = clock.querySelector('.hours1' + ${dispositivo.id});
+														var minutesSpan = clock.querySelector('.minutes1' + ${dispositivo.id});
+														var aux = false;
+														var t = getTimeRemaining(${dispositivo.systimeOUT});
+														
+														if (aux){
+															minutesSpan.innerHTML = 'few minutes ago';
+														} else{
+															hoursSpan.innerHTML = t.hours + 'h ' + ':';
+															minutesSpan.innerHTML = t.minutes + 'm ' + 'ago';
+														}
+														
+														
+													</script>
+													</c:forEach>
+												</tbody>
+											</table>
+										</div>
+									</div>
 								</div>
 								<!-- /.panel-body -->
 							</div>

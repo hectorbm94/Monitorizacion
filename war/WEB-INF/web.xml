@@ -8,6 +8,21 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<!-- Servlets de la aplicacion -->
 	
 	<servlet>
+		<servlet-name>Inicializacion</servlet-name>
+		<servlet-class>es.upm.monitorizacion.servlet.InitServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet> 
+	
+	<servlet>
+		<servlet-name>Correos</servlet-name>
+		<servlet-class>es.upm.monitorizacion.servlet.CorreosServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Correos</servlet-name>
+		<url-pattern>/_ah/mail/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>Monitorizacion</servlet-name>
 		<servlet-class>es.upm.monitorizacion.servlet.MonitorizacionServlet</servlet-class>
 	</servlet>

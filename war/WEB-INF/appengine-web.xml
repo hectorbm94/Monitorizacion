@@ -12,7 +12,12 @@
   <system-properties>
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
   </system-properties>
-
+  
+  <!-- Activacion de servlet por recepcion de correo -->
+  <inbound-services>
+	<service>mail</service>
+  </inbound-services>
+  
   <!--
     HTTP Sessions are disabled by default. To enable HTTP sessions specify: -->
 

@@ -31,7 +31,11 @@ public class ResumenDisp implements Serializable {
 		LAP = lAP;
 		SNRmedia = sNRmedia;
 	}
-
+	
+	public Long getId() {
+		return id;
+	}
+	
 	public Long getSystimeIN() {
 		return systimeIN;
 	}
