@@ -147,7 +147,7 @@
 														var t = getTimeRemaining(${dispositivo.systimeIN});
 														
 														if (aux){
-															minutesSpan.innerHTML = 'few minutes ago';
+															minutesSpan.innerHTML = 'just now';
 														} else{
 															hoursSpan.innerHTML = t.hours + 'h ' + ':';
 															minutesSpan.innerHTML = t.minutes + 'm ' + 'ago';
@@ -207,7 +207,7 @@
 														var t = getTimeRemaining(${dispositivo.systimeOUT});
 														
 														if (aux){
-															minutesSpan.innerHTML = 'few minutes ago';
+															minutesSpan.innerHTML = 'just now';
 														} else{
 															hoursSpan.innerHTML = t.hours + 'h ' + ':';
 															minutesSpan.innerHTML = t.minutes + 'm ' + 'ago';

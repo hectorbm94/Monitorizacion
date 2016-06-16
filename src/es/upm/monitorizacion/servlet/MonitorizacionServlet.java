@@ -1,6 +1,7 @@
 package es.upm.monitorizacion.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -16,7 +17,29 @@ public class MonitorizacionServlet extends HttpServlet {
 		String alerta = null;
 		ResumenDispDAO dao = ResumenDispDAOImpl.getInstance();
 		
-		req.getSession().setAttribute("dispositivos", new ArrayList<ResumenDisp>(dao.readResumenDisp()));
+		ArrayList<ResumenDisp> ordenados = new ArrayList<ResumenDisp>();
+		List<ResumenDisp> dispo = dao.readResumenDisp();
+		boolean aux = true;
+		
+		for (int i = 0; i < dispo.size(); i++){
+			if (ordenados.size() != 0){
+				for (int j = 0; j < ordenados.size(); j++){
+					if (dispo.get(i).getSystimeIN() >= ordenados.get(j).getSystimeIN()){
+						ordenados.add(j, dispo.get(i));
+						aux = false;
+						break;
+					}
+				}
+				if (aux){
+					ordenados.add(dispo.get(i));
+				}
+				aux = true;
+			} else{
+				ordenados.add(dispo.get(i));
+			}		
+		}
+		System.out.println(ordenados.size());
+		req.getSession().setAttribute("dispositivos", ordenados);
 		
 		if (req.getSession().getAttribute("captura") == null){
 			req.getSession().setAttribute("alerta", alerta);

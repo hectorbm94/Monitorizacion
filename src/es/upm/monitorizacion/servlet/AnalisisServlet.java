@@ -24,6 +24,7 @@ public class AnalisisServlet extends HttpServlet {
 		
 		ArrayList<ResumenDisp> arrivals = new ArrayList<ResumenDisp>();
 		ArrayList<ResumenDisp> departures = new ArrayList<ResumenDisp>();
+		ArrayList<String> totalLap = new ArrayList<String>();
 		Integer[] total = new Integer[5];
 		for(int i = 0; i < total.length; i++){
 			total[i]=0;
@@ -51,50 +52,74 @@ public class AnalisisServlet extends HttpServlet {
 		for (int i = 0; i < dispo.size(); i++){
 			
 			if ((dispo.get(i).getSystimeIN()*1000) > milisHoy){
-				total[0]++;
-				if (arrivals.size() == 0 && departures.size() == 0){
-					arrivals.add(dispo.get(i));
-					departures.add(dispo.get(i));
-				} else{
-					for (int j = 0; j < arrivals.size(); j++){
-						if (dispo.get(i).getSystimeIN() >= arrivals.get(j).getSystimeIN()){
-							arrivals.add(j, dispo.get(i));
-							aux = false;
-							break;
-						}						
-					}
-					if (aux){
+
+				if (!totalLap.contains(dispo.get(i).getLAP() + "0")){
+					totalLap.add(dispo.get(i).getLAP() + "0");
+					total[0]++;
+				}
+				if (dispo.get(i).getSystimeIN()*1000 >= milisAhora-3600000){
+
+					if (arrivals.size() == 0){
 						arrivals.add(dispo.get(i));
-					}
-					aux = true;
-					for (int j = 0; j < departures.size(); j++){
-						if (dispo.get(i).getSystimeOUT() >= departures.get(j).getSystimeOUT()){
-							departures.add(j, dispo.get(i));
-							aux = false;
-							break;
-						}						
-					}
-					if (aux){
-						departures.add(dispo.get(i));
+					} else{
+						for (int j = 0; j < arrivals.size(); j++){
+							if (dispo.get(i).getSystimeIN() >= arrivals.get(j).getSystimeIN()){
+								arrivals.add(j, dispo.get(i));
+								aux = false;
+								break;
+							}						
+						}
+						if (aux){
+							arrivals.add(dispo.get(i));
+						}
+						aux = true;
 					}
 				}
-				
+				if (dispo.get(i).getSystimeOUT()*1000 >= milisAhora-3600000){
+
+					if (departures.size() == 0){
+						departures.add(dispo.get(i));
+					} else{	
+						for (int j = 0; j < departures.size(); j++){
+							if (dispo.get(i).getSystimeOUT() >= departures.get(j).getSystimeOUT()){
+								departures.add(j, dispo.get(i));
+								aux = false;
+								break;
+							}						
+						}
+						if (aux){
+							departures.add(dispo.get(i));
+						}
+					}
+				}
 			}
 			else if ((dispo.get(i).getSystimeIN()*1000) < milisHoy && (dispo.get(i).getSystimeIN()*1000) > (milisHoy - milisDia)){
-				total[1]++;
+				if (!totalLap.contains(dispo.get(i).getLAP() + "1")){
+					totalLap.add(dispo.get(i).getLAP() + "1");
+					total[1]++;
+				} 
 			}
 			else if ((dispo.get(i).getSystimeIN()*1000) < (milisHoy - milisDia) && (dispo.get(i).getSystimeIN()*1000) > (milisHoy - 2*milisDia)){
-				total[2]++;
+				if (!totalLap.contains(dispo.get(i).getLAP() + "2")){
+					totalLap.add(dispo.get(i).getLAP() + "2");
+					total[2]++;
+				} 
 			}
 			else if ((dispo.get(i).getSystimeIN()*1000) < (milisHoy - 2*milisDia) && (dispo.get(i).getSystimeIN()*1000) > (milisHoy - 3*milisDia)){
-				total[3]++;
+				if (!totalLap.contains(dispo.get(i).getLAP() + "3")){
+					totalLap.add(dispo.get(i).getLAP() + "3");
+					total[3]++;
+				} 
 			}
 			else if ((dispo.get(i).getSystimeIN()*1000) < (milisHoy - 3*milisDia) && (dispo.get(i).getSystimeIN()*1000) > (milisHoy - 4*milisDia)){
-				total[4]++;
+				if (!totalLap.contains(dispo.get(i).getLAP() + "4")){
+					totalLap.add(dispo.get(i).getLAP() + "4");
+					total[4]++;
+				} 
 			}
 		}
 		
-		req.getSession().setAttribute("milisAhora", (milisAhora/1000) - 900);
+		req.getSession().setAttribute("milisAhora", (milisAhora/1000));
 		req.getSession().setAttribute("arrivals", arrivals);
 		req.getSession().setAttribute("departures", departures);
 		req.getSession().setAttribute("total", Arrays.asList(total));
