@@ -1,7 +1,6 @@
 package es.upm.monitorizacion.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.logging.Logger;
 import java.util.ArrayList;
@@ -17,8 +16,6 @@ import javax.mail.Session;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,72 +36,90 @@ public class CorreosServlet extends HttpServlet {
     Properties props = new Properties();
     Session session = Session.getDefaultInstance(props, null);
     String mensaje = null;
+    Date hora = new Date();
     try {
       MimeMessage message = new MimeMessage(session, req.getInputStream());
       log.info("Received mail message.");
-      MimeMultipart content = (MimeMultipart) message.getContent();
-      for( int i=0; i<content.getCount(); i++ )
-      {
-       BodyPart part = content.getBodyPart( i );
-       ContentType ct = new ContentType( part.getContentType() );
-       if (ct.getPrimaryType().equals("text") && ct.getSubType().equals("plain")){
-           mensaje = (String) part.getContent();
-       }
+      if ((hora.getTime() - message.getSentDate().getTime()) < 30000){
+    	  Object contenido = message.getContent();
+    	  if (contenido instanceof String){
+    		  mensaje = (String) message.getContent();
+    	  } else if (message.isMimeType("multipart/*")){
+    		  MimeMultipart content = (MimeMultipart) message.getContent();
+    		  for( int i=0; i<content.getCount(); i++ ) {
+    			  BodyPart part = content.getBodyPart( i );
+    			  ContentType ct = new ContentType( part.getContentType() );
+            	  if (ct.getPrimaryType().equals("text") && ct.getSubType().equals("plain")){
+            			  mensaje = (String) part.getContent();
+            	  } 
+    		  }
+          } else if (message.isMimeType("text/plain")) {
+        	  mensaje = (String) message.getContent();
+          }
       }
       
     } catch (MessagingException e) {
       // ...
     }
     //System.out.println(mensaje);
+        
     int f = 0;
-    String [] campos = mensaje.split("\\n+");
     ArrayList<Dispositivos> dispo = new ArrayList<Dispositivos>();
 	ArrayList<String> LAPS = new ArrayList<String>();
 	DispositivosDAO dao = DispositivosDAOImpl.getInstance();
 	ResumenDispDAO dao1 = ResumenDispDAOImpl.getInstance();
 	String auxiliar = null;
-	String alerta = null;
     String auxLap = null;
 	String auxSystime = null;
 	
-    while(f<campos.length){
-    	System.out.println(campos[f]);
-    	System.out.println("linea " + f);
+	if (mensaje != null){
+		mensaje = mensaje.replace("&nbsp","");
+		mensaje = mensaje.replace("\n","");
+		log.info(mensaje);
+    	String [] campos = mensaje.split("systime");
     	
-    	String[] disp = campos[f].split(" ");
-    	if (disp.length > 8){
-    		String[] systime = disp[0].split("=");
-    		String[] cha = disp[1].split("=");
-    		String[] LAP = disp[2].split("=");
-    		String[] senal = disp[6].split("=");
-    		String[] ruido = disp[7].split("=");
-    		String[] SNR = disp[8].split("=");
-        	if (systime.length == 2 && cha.length == 2 && LAP.length == 2 && senal.length == 2 && ruido.length ==2 && SNR.length == 2){
-        		if (LAP[1].equals(auxLap)){
-        			if (!systime[1].equals(auxSystime)){
-        				
-        					Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), Integer.parseInt(SNR[1]));
-        					dispo.add(dispositivo);
-        					auxiliar = dispositivo.getLAP();
-        					if (!LAPS.contains(auxiliar)){
-        						LAPS.add(auxiliar);
-        					} 
-        				System.out.println(dispositivo.toString());
-        			}
-        		} else {
-        			Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), Integer.parseInt(SNR[1]));
-        			dispo.add(dispositivo);
-        			auxiliar = dispositivo.getLAP();
-        			if (!LAPS.contains(auxiliar)){
-        				LAPS.add(auxiliar);
-        			} 
-        			System.out.println(dispositivo.toString());
-        		}
-        		auxLap = LAP[1];
-        		auxSystime = systime[1];
+    	while(f<campos.length){
+        	//System.out.println(campos[f]);
+        	//System.out.println("linea " + f);
+        	
+        	String[] disp = campos[f].split(" ");
+        	if (disp.length > 8){
+        		String[] systime = disp[0].split("=");
+        		String[] cha = disp[1].split("=");
+        		String[] LAP = disp[2].split("=");
+        		String[] senal = disp[6].split("=");
+        		String[] ruido = disp[7].split("=");
+        		String[] SNR = disp[8].split("=");
+            	if (systime.length == 2 && cha.length == 2 && LAP.length == 2 && senal.length == 2 && ruido.length ==2 && SNR.length == 2){
+            		SNR[1] = SNR[1].trim();
+            		//log.info(SNR[1]);
+            		Integer sNR = Integer.parseInt(SNR[1]);
+            		if (LAP[1].equals(auxLap)){
+            			if (!systime[1].equals(auxSystime)){
+            				
+            					Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), sNR);
+            					dispo.add(dispositivo);
+            					auxiliar = dispositivo.getLAP();
+            					if (!LAPS.contains(auxiliar)){
+            						LAPS.add(auxiliar);
+            					} 
+            				//System.out.println(dispositivo.toString());
+            			}
+            		} else {
+            			Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), sNR);
+            			dispo.add(dispositivo);
+            			auxiliar = dispositivo.getLAP();
+            			if (!LAPS.contains(auxiliar)){
+            				LAPS.add(auxiliar);
+            			} 
+            			//System.out.println(dispositivo.toString());
+            		}
+            		auxLap = LAP[1];
+            		auxSystime = systime[1];
+            	}
         	}
-    	}
-    	f++;
+        	f++;
+        }
     }
     
     for(int i = 0; i < LAPS.size(); i++){
@@ -141,15 +156,19 @@ public class CorreosServlet extends HttpServlet {
 				systimeOUT = systimes.get(j);
 			} else if((systimes.get(j) - systimeOUT) > 10){
 				//Guardamos la lectura del dispositivo
+				Boolean aux = false;
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 				sdf.setTimeZone(TimeZone.getTimeZone("Europe/Madrid"));
 				Date fechaEntrada = new Date();
 				Date fechaSalida = new Date();
+				if ((fechaEntrada.getTime()-systimeOUT*1000)<0){
+					aux = true;
+				}
 				fechaEntrada.setTime(systimeIN*1000);
 				fechaSalida.setTime(systimeOUT*1000);
 				String fechaEn = sdf.format(fechaEntrada);
 				String fechaSa = sdf.format(fechaSalida);
-				Boolean aux = false;
+				
 				for (int k = 0; k < dao1.readResumenDisp_systimeIN(systimeIN).size(); k++){
 					if (dao1.readResumenDisp_systimeIN(systimeIN).get(k).getLAP().equals(lAP)){
 						
@@ -190,12 +209,6 @@ public class CorreosServlet extends HttpServlet {
 		if (!aux){
 			dao1.create(systimeIN, canal, lAP, systimeOUT, fechaEn, fechaSa, SNRmedia);
 		}
-
 	}
-	
-	req.getSession().setAttribute("alerta", alerta);
-	req.getSession().setAttribute("captura", "true");
-	resp.sendRedirect("/monitorizacion");
-    
   }
 }
