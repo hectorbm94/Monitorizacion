@@ -70,7 +70,7 @@ public class CapturaServlet extends HttpServlet {
 				String[] SNR = disp[8].split("=");
 				
 				if (LAP[1].equals(auxLap)){
-					if (!systime[1].equals(auxSystime)){
+					if (!systime[1].equals(auxSystime) && Integer.parseInt(SNR[1]) >= 10){
 						
 							Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), Integer.parseInt(SNR[1]));
 							dispo.add(dispositivo);
@@ -81,13 +81,15 @@ public class CapturaServlet extends HttpServlet {
 						//System.out.println(dispositivo.toString());
 					}
 				} else {
-					Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), Integer.parseInt(SNR[1]));
-					dispo.add(dispositivo);
-					auxiliar = dispositivo.getLAP();
-					if (!LAPS.contains(auxiliar)){
-						LAPS.add(auxiliar);
-					} 
-					//System.out.println(dispositivo.toString());
+					if (Integer.parseInt(SNR[1]) >= 10){
+						Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), Integer.parseInt(SNR[1]));
+						dispo.add(dispositivo);
+						auxiliar = dispositivo.getLAP();
+						if (!LAPS.contains(auxiliar)){
+							LAPS.add(auxiliar);
+						} 
+						//System.out.println(dispositivo.toString());
+					}
 				}
 				
 				//a.append("/");

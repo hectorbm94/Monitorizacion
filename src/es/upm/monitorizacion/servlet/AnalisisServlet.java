@@ -75,7 +75,7 @@ public class AnalisisServlet extends HttpServlet {
 						aux = true;
 					}
 				}
-				if (dispo.get(i).getSystimeOUT()*1000 >= milisAhora-3600000){
+				if (dispo.get(i).getSystimeOUT()*1000 >= milisAhora-3600000 && dispo.get(i).getSystimeOUT()*1000 <= milisAhora-600000){
 
 					if (departures.size() == 0){
 						departures.add(dispo.get(i));
@@ -90,6 +90,7 @@ public class AnalisisServlet extends HttpServlet {
 						if (aux){
 							departures.add(dispo.get(i));
 						}
+						aux = true;
 					}
 				}
 			}

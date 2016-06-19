@@ -16,7 +16,6 @@ public class MonitorizacionServlet extends HttpServlet {
 		
 		String alerta = null;
 		ResumenDispDAO dao = ResumenDispDAOImpl.getInstance();
-		
 		ArrayList<ResumenDisp> ordenados = new ArrayList<ResumenDisp>();
 		List<ResumenDisp> dispo = dao.readResumenDisp();
 		boolean aux = true;
@@ -38,7 +37,8 @@ public class MonitorizacionServlet extends HttpServlet {
 				ordenados.add(dispo.get(i));
 			}		
 		}
-		System.out.println(ordenados.size());
+		
+		//System.out.println(ordenados.size());
 		req.getSession().setAttribute("dispositivos", ordenados);
 		
 		if (req.getSession().getAttribute("captura") == null){

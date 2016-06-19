@@ -90,33 +90,37 @@ public class CorreosServlet extends HttpServlet {
         		String[] senal = disp[6].split("=");
         		String[] ruido = disp[7].split("=");
         		String[] SNR = disp[8].split("=");
-            	if (systime.length == 2 && cha.length == 2 && LAP.length == 2 && senal.length == 2 && ruido.length ==2 && SNR.length == 2){
-            		SNR[1] = SNR[1].trim();
-            		//log.info(SNR[1]);
-            		Integer sNR = Integer.parseInt(SNR[1]);
-            		if (LAP[1].equals(auxLap)){
-            			if (!systime[1].equals(auxSystime)){
-            				
-            					Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), sNR);
-            					dispo.add(dispositivo);
-            					auxiliar = dispositivo.getLAP();
-            					if (!LAPS.contains(auxiliar)){
-            						LAPS.add(auxiliar);
-            					} 
-            				//System.out.println(dispositivo.toString());
-            			}
-            		} else {
-            			Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), sNR);
-            			dispo.add(dispositivo);
-            			auxiliar = dispositivo.getLAP();
-            			if (!LAPS.contains(auxiliar)){
-            				LAPS.add(auxiliar);
-            			} 
-            			//System.out.println(dispositivo.toString());
-            		}
-            		auxLap = LAP[1];
-            		auxSystime = systime[1];
-            	}
+        		if (LAP[1].length() == 6){
+        			if (systime.length == 2 && cha.length == 2 && LAP.length == 2 && senal.length == 2 && ruido.length ==2 && SNR.length == 2){
+                		SNR[1] = SNR[1].trim();
+                		//log.info(SNR[1]);
+                		Integer sNR = Integer.parseInt(SNR[1]);
+                		if (LAP[1].equals(auxLap)){
+                			if (!systime[1].equals(auxSystime) && sNR >= 10){
+                				
+                					Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), sNR);
+                					dispo.add(dispositivo);
+                					auxiliar = dispositivo.getLAP();
+                					if (!LAPS.contains(auxiliar)){
+                						LAPS.add(auxiliar);
+                					} 
+                				//System.out.println(dispositivo.toString());
+                			}
+                		} else {
+                			if (sNR >= 10){
+                				Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), sNR);
+                    			dispo.add(dispositivo);
+                    			auxiliar = dispositivo.getLAP();
+                    			if (!LAPS.contains(auxiliar)){
+                    				LAPS.add(auxiliar);
+                    			}
+                    			//System.out.println(dispositivo.toString());
+                			}
+                		}
+                		auxLap = LAP[1];
+                		auxSystime = systime[1];
+                	}
+        		}
         	}
         	f++;
         }
@@ -138,7 +142,8 @@ public class CorreosServlet extends HttpServlet {
 				if (j == 0){
 					canal = disp.get(j).getCanal();
 				}
-				if (dispo.get(0).getId() <= disp.get(j).getId()){
+				Date Ahora = new Date();
+				if ((disp.get(j).getSystime()*1000) >= (Ahora.getTime()-3600000)){
 					SNRmedia += disp.get(j).getSNR();
 					contador++;
 				}
