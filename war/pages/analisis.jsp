@@ -40,7 +40,10 @@
 							<div class="panel panel-default">
 								<!-- /.panel-heading -->
 								<div class="panel-body">
+									<h2>Dispositivos al día</h2>
 									<canvas id="myChart"></canvas>
+									<h2>Dispositivos por hora</h2>
+									<canvas id="myChart2"></canvas>
 									<script src="../js/Chart.js"></script>
 									<script>
 										var ctx = document.getElementsByTagName('canvas')[0];
@@ -61,6 +64,60 @@
 										    datasets: [
 												{
 													label: "Dispositivos/Día",
+													fill: false,
+													lineTension: 0.1,
+													backgroundColor: "rgba(75,192,192,0.4)",
+													borderColor: "rgba(75,192,192,1)",
+													borderCapStyle: 'butt',
+													borderDash: [],
+													borderDashOffset: 0.0,
+													borderJoinStyle: 'miter',
+													pointBorderColor: "rgba(75,192,192,1)",
+													pointBackgroundColor: "#fff",
+													pointBorderWidth: 1,
+													pointHoverRadius: 5,
+													pointHoverBackgroundColor: "rgba(75,192,192,1)",
+													pointHoverBorderColor: "rgba(220,220,220,1)",
+													pointHoverBorderWidth: 2,
+													pointRadius: 1,
+													pointHitRadius: 10,
+													data: axisY,
+												}
+										    ]
+										};
+											
+										var options = {
+											scales: {
+									            yAxes: [{
+									                ticks: {
+									                    beginAtZero:true
+									                }
+									            }]
+									        }
+										};
+										
+										var myChart = new Chart(ctx, {
+										    type   : 'line',
+										    data   : data,
+										    options: options
+										});
+									</script>
+									<script>
+										var ctx = document.getElementsByTagName('canvas')[1];
+										ctx.height = 70;
+										
+										var axisX = ["00am", "01am", "02am", "03am", "04am", "05am", "06am", "07am", "08am", "09am", "10am", "11am", "12pm", "13pm", "14pm", "15pm", "16pm", "17pm", "18pm", "19pm", "20pm", "21pm", "22pm", "23pm"];
+										
+										var axisY = [];
+										<c:forEach items="${horas}" var="y">
+											axisY.push(parseInt("<c:out value='${y}'/>"));
+										</c:forEach>
+										
+										var data = {
+										    labels  : axisX,
+										    datasets: [
+												{
+													label: "Dispositivos/Hora",
 													fill: false,
 													lineTension: 0.1,
 													backgroundColor: "rgba(75,192,192,0.4)",

@@ -1,5 +1,6 @@
 package es.upm.monitorizacion.servlet;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +30,10 @@ public class AnalisisServlet extends HttpServlet {
 		for(int i = 0; i < total.length; i++){
 			total[i]=0;
 		}
+		Integer[] horas = new Integer[24];
+		for(int i = 0; i < horas.length; i++){
+			horas[i]=0;
+		}
 		String[] dias = new String[5];
 		
 		Long milisDia = (long) 86400000;
@@ -47,6 +52,7 @@ public class AnalisisServlet extends HttpServlet {
 			}
 		}
 		
+		int hora = -1;
 		boolean aux = true;
 		List<ResumenDisp> dispo = dao.readResumenDisp();
 		for (int i = 0; i < dispo.size(); i++){
@@ -56,6 +62,18 @@ public class AnalisisServlet extends HttpServlet {
 				if (!totalLap.contains(dispo.get(i).getLAP() + "0")){
 					totalLap.add(dispo.get(i).getLAP() + "0");
 					total[0]++;
+					
+					SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+					sdf.setTimeZone(TimeZone.getTimeZone("Europe/Madrid"));
+					try {
+						Date fechaEntrada = sdf1.parse(dispo.get(i).getFechaEntrada());
+						hora = fechaEntrada.getHours();
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					if (hora != -1){
+						horas[hora]++;
+					}
 				}
 				if (dispo.get(i).getSystimeIN()*1000 >= milisAhora-3600000){
 
@@ -124,6 +142,7 @@ public class AnalisisServlet extends HttpServlet {
 		req.getSession().setAttribute("arrivals", arrivals);
 		req.getSession().setAttribute("departures", departures);
 		req.getSession().setAttribute("total", Arrays.asList(total));
+		req.getSession().setAttribute("horas", Arrays.asList(horas));
 		req.getSession().setAttribute("dias", Arrays.asList(dias));
 		resp.sendRedirect("/pages/analisis.jsp");
 	}
