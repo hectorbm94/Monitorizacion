@@ -12,5 +12,5 @@ public interface DispositivosDAO {
 	public List<Dispositivos> readDispositivos_canal(int canal);
 	public List<Dispositivos> readDispositivos_id(Long id);
 	public List<Dispositivos> readDispositivos_systime(Long systime);
-
+	public void borrado();
 }

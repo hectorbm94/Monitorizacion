@@ -97,23 +97,30 @@ public class CorreosServlet extends HttpServlet {
                 		Integer sNR = Integer.parseInt(SNR[1]);
                 		if (LAP[1].equals(auxLap)){
                 			if (!systime[1].equals(auxSystime) && sNR >= 10){
-                				
+                				Date ahora = new Date();
+                				Long milisAhora = ahora.getTime();
+                				if(milisAhora > Long.parseLong(systime[1])){
                 					Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), sNR);
                 					dispo.add(dispositivo);
                 					auxiliar = dispositivo.getLAP();
                 					if (!LAPS.contains(auxiliar)){
                 						LAPS.add(auxiliar);
                 					} 
+                				}
                 				//System.out.println(dispositivo.toString());
                 			}
                 		} else {
                 			if (sNR >= 10){
-                				Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), sNR);
-                    			dispo.add(dispositivo);
-                    			auxiliar = dispositivo.getLAP();
-                    			if (!LAPS.contains(auxiliar)){
-                    				LAPS.add(auxiliar);
-                    			}
+                				Date ahora = new Date();
+                				Long milisAhora = ahora.getTime();
+                				if(milisAhora > Long.parseLong(systime[1])){
+                					Dispositivos dispositivo = dao.create(Long.parseLong(systime[1]), Integer.parseInt(cha[1]), LAP[1], Integer.parseInt(senal[1]), Integer.parseInt(ruido[1]), sNR);
+                        			dispo.add(dispositivo);
+                        			auxiliar = dispositivo.getLAP();
+                        			if (!LAPS.contains(auxiliar)){
+                        				LAPS.add(auxiliar);
+                        			}
+                				}
                     			//System.out.println(dispositivo.toString());
                 			}
                 		}
@@ -215,5 +222,6 @@ public class CorreosServlet extends HttpServlet {
 			dao1.create(systimeIN, canal, lAP, systimeOUT, fechaEn, fechaSa, SNRmedia);
 		}
 	}
+    dao.borrado();
   }
 }

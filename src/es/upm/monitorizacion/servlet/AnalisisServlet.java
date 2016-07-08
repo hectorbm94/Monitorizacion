@@ -26,6 +26,7 @@ public class AnalisisServlet extends HttpServlet {
 		ArrayList<ResumenDisp> arrivals = new ArrayList<ResumenDisp>();
 		ArrayList<ResumenDisp> departures = new ArrayList<ResumenDisp>();
 		ArrayList<String> totalLap = new ArrayList<String>();
+		ArrayList<String> horasAux = new ArrayList<String>();
 		Integer[] total = new Integer[5];
 		for(int i = 0; i < total.length; i++){
 			total[i]=0;
@@ -62,19 +63,24 @@ public class AnalisisServlet extends HttpServlet {
 				if (!totalLap.contains(dispo.get(i).getLAP() + "0")){
 					totalLap.add(dispo.get(i).getLAP() + "0");
 					total[0]++;
-					
-					SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-					sdf.setTimeZone(TimeZone.getTimeZone("Europe/Madrid"));
-					try {
-						Date fechaEntrada = sdf1.parse(dispo.get(i).getFechaEntrada());
-						hora = fechaEntrada.getHours();
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-					if (hora != -1){
-						horas[hora]++;
-					}
 				}
+					
+				SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+				sdf.setTimeZone(TimeZone.getTimeZone("Europe/Madrid"));
+				try {
+					Date fechaEntrada = sdf1.parse(dispo.get(i).getFechaEntrada());
+					hora = fechaEntrada.getHours();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				if (hora != -1){
+					if (!horasAux.contains(dispo.get(i).getLAP()+hora)){
+						horas[horas.length-hora-1]++;
+						horasAux.add(dispo.get(i).getLAP()+hora);
+					}
+
+				}
+				
 				if (dispo.get(i).getSystimeIN()*1000 >= milisAhora-3600000){
 
 					if (arrivals.size() == 0){

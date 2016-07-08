@@ -187,7 +187,7 @@ public class CapturaServlet extends HttpServlet {
 			}
 
 		}
-		
+		dao.borrado();
 		req.getSession().setAttribute("alerta", alerta);
 		req.getSession().setAttribute("captura", "true");
 		resp.sendRedirect("/monitorizacion");

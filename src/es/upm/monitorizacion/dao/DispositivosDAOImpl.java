@@ -108,4 +108,16 @@ public class DispositivosDAOImpl implements DispositivosDAO {
 		
 		return dispositivos;
 	}
+	
+	@Override
+	public void borrado() {
+		
+		EntityManager em = EMFService.get().createEntityManager();
+		
+		Query q = em.createQuery("DELETE FROM Dispositivos");
+	    
+	    q.executeUpdate();
+		em.close();
+		
+	}
 }

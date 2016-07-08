@@ -106,7 +106,7 @@
 										var ctx = document.getElementsByTagName('canvas')[1];
 										ctx.height = 70;
 										
-										var axisX = ["00am", "01am", "02am", "03am", "04am", "05am", "06am", "07am", "08am", "09am", "10am", "11am", "12pm", "13pm", "14pm", "15pm", "16pm", "17pm", "18pm", "19pm", "20pm", "21pm", "22pm", "23pm"];
+										var axisX = ["23pm", "22pm", "21pm", "20pm", "19pm", "18pm", "17pm", "16pm", "15pm", "14pm", "13pm", "12pm", "11am", "10am", "09am", "08am", "07am", "06am", "05am", "04am", "03am", "02am", "01am", "00am"];
 										
 										var axisY = [];
 										<c:forEach items="${horas}" var="y">
