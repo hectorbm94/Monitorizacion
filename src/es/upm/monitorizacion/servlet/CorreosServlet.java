@@ -164,9 +164,9 @@ public class CorreosServlet extends HttpServlet {
 				systimeIN = systimes.get(j);
 				systimeOUT = systimes.get(j);
 
-			} else if((systimes.get(j) - systimeOUT) < 10){
+			} else if((systimes.get(j) - systimeOUT) < 30){
 				systimeOUT = systimes.get(j);
-			} else if((systimes.get(j) - systimeOUT) > 10){
+			} else if((systimes.get(j) - systimeOUT) > 30){
 				//Guardamos la lectura del dispositivo
 				Boolean aux = false;
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");

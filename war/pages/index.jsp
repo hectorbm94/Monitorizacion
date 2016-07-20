@@ -48,6 +48,7 @@
 											<thead>
 												<tr class="headings">
 													<th>LAP</th>
+													<th>Systime</th>
 													<th>Fecha Entrada</th>
 													<th>Fecha Salida</th>
 													<th>Canal</th>
@@ -58,6 +59,7 @@
 												<c:forEach items="${dispositivos}" var="dispositivo">
 													<tr>
 														<td><c:out value="${dispositivo.LAP}" /></td>
+														<td><c:out value="${dispositivo.systimeIN}" /></td>
 														<td><c:out value="${dispositivo.fechaEntrada}" /></td>
 														<td><c:out value="${dispositivo.fechaSalida}" /></td>
 														<td><c:out value="${dispositivo.canal}" /></td>

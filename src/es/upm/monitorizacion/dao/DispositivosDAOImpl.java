@@ -114,7 +114,7 @@ public class DispositivosDAOImpl implements DispositivosDAO {
 		
 		EntityManager em = EMFService.get().createEntityManager();
 		
-		Query q = em.createQuery("DELETE FROM Dispositivos");
+		Query q = em.createQuery("DELETE FROM Dispositivos t");
 	    
 	    q.executeUpdate();
 		em.close();

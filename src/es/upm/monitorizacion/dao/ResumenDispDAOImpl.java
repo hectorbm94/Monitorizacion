@@ -93,5 +93,16 @@ private static ResumenDispDAOImpl instance;
 		
 		return dispositivos;
 	}
+	
+	@Override
+	public void borrado(Long systimeIN) {
+		
+		EntityManager em = EMFService.get().createEntityManager();
+		
+		Query q = em.createQuery("DELETE FROM ResumenDisp t where t.systimeIN < :systimeIN");
+		q.setParameter("systimeIN", systimeIN);
+	    q.executeUpdate();
+		em.close();
+	}
 
 }

@@ -11,5 +11,6 @@ public interface ResumenDispDAO {
 	public List<ResumenDisp> readResumenDisp_LAP(String LAP);
 	public List<ResumenDisp> readResumenDisp_systimeIN(Long systimeIN);
 	public List<ResumenDisp> readResumenDisp_systimeOUT(Long systimeOUT);
+	public void borrado(Long systimeIN);
 	
 }

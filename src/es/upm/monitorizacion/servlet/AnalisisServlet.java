@@ -144,6 +144,8 @@ public class AnalisisServlet extends HttpServlet {
 			}
 		}
 		
+		dao.borrado((milisHoy - 4*milisDia)/1000);
+		
 		req.getSession().setAttribute("milisAhora", (milisAhora/1000));
 		req.getSession().setAttribute("arrivals", arrivals);
 		req.getSession().setAttribute("departures", departures);
